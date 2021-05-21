@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": ".."
+	},
+	{
+		"path": "../../BmapQuery-master"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "map"
+  }
+}

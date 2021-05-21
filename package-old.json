@@ -1,0 +1,19 @@
+{
+  "name": "empath-demo",
+  "version": "2.0.0",
+  "description": "Example code of WebEmpath API. For node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "smc_admin@webempath.net",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.62.0"
+  },
+  "engines": {
+    "node": "v16.1.0",
+    "npm": "7.11.2"
+  }
+}

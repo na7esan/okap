@@ -1,0 +1,118 @@
+video {
+  display: block;
+  margin: 20px 0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  /* min-width: 100%; min-height: 100%; */
+  background-color: blue; /*背景色・透明*/
+  padding: 20px 20px; /*枠線の太さ*/
+  /* -webkit-box-shadow: 1px 1px 0 #C0C0C0;  */
+  /* -moz-box-shadow: 1px 1px 0 #C0C0C0;  */
+  /* box-shadow: 1px 1px 2px #ECECEC; */
+  /* border: 2px solid #0c0a0a; */
+}
+.results {
+  font-family: YuMincho;
+  color: white;
+  font-size: 25px;
+  padding-top: 30px;
+  padding-left: 50px;
+}
+#emotion {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#emotion_result {
+  padding-bottom: 20px;
+}
+
+.btn {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  border-radius: 5%; /* 角丸       */
+  font-size: 18pt; /* 文字サイズ */
+  text-align: center; /* 文字位置   */
+  cursor: pointer; /* カーソル   */
+  padding: 12px 12px; /* 余白       */
+  background: #000066; /* 背景色     */
+  color: #ffffff; /* 文字色     */
+  line-height: 1em; /* 1行の高さ  */
+  transition: 0.3s; /* なめらか変化 */
+  box-shadow: 6px 6px 3px #666666; /* 影の設定 */
+  border: 2px solid #000066; /* 枠の指定 */
+}
+.btn:hover {
+  box-shadow: none; /* カーソル時の影消去 */
+  color: #000066; /* 背景色     */
+  background: #ffffff; /* 文字色     */
+}
+.btn a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+.imgbox {
+  display: block;
+  margin: 20px 0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  z-index: -100;
+}
+nav{
+  list-style: none;
+  overflow: hidden;
+}
+nav li {
+  width: 250px;
+  text-align: center;
+  color: #ffffff;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  margin-right: 2px;
+  text-shadow: 1px 2px 3px #666666;
+}
+nav li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+.a {
+  font-family: YuMincho;
+  color: white;
+  font-size: 60px;
+  font-style: italic;
+  text-shadow: 1px 2px 3px #666666;
+  text-align: center;
+  margin: 30px auto 60px auto;
+}
+.b {
+  font-family: YuMincho;
+  color: white;
+  font-size: 25px;
+  font-style: normal;
+  text-align: center;
+  text-shadow: 1px 2px 3px #666666;
+  padding-top: 80px;
+}
+.textbox {
+  text-align: center;
+}
+.description {
+  display: inline-block;
+}
+footer {
+  padding-top: 200px;
+  text-align: center;
+  font-size: 20px;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>MorphCast AI HTML5 SDK - Base example</title>
+    <meta name="mphtools-feature" content="compatibilityUI, cameraPrivacyPopup, compatibilityAutoCheck">
+</head>
+<body>
+    <wrapper class= "video-frame">
+          <!-- ビデオを表示する場所 -->
+          <video id="my-video" width=100% autoplay muted playsinline></video>
+          <p id="my-id"></p>
+          <!-- <input id="their-id" /> -->
+          <!-- <button id="make-call">発信</button> -->
+          <video id="their-video" width=100% autoplay muted playsinline></video>
+          <!-- ビデオ表示する場所(ここまで) -->
+    </wrapper>
+
+    <div class= "results">
+        <div><b>Results</b></div>
+        <div id="age">Age: -</div>
+        <div id="gender">Gender: -</div>
+        <div id="emotion">Main Emotion: -</div>
+        <div>Details: <p id="emotion_result">-</p></div>
+        <div>Arousal Valence: <p id="face_arousal_valence_result">-</p></div>
+    </div>
+    <!-- 戻るボタン -->
+    <div class="btn">
+    　　　<a href="index.html">Homeに戻る</a>
+    </div>
+
+
+
+
+    <script src="https://sdk.morphcast.com/mphtools/v1.0/mphtools.js"></script>
+    <script src="https://ai-sdk.morphcast.com/v1.14/ai-sdk.js"></script>
+
+    <!-- //ビデオ表示 -->
+        <!-- GetUserMediaを使用 -->
+        <script>
+            let localStream;
+      
+            // カメラ映像取得
+            navigator.mediaDevices
+              .getUserMedia({ video: true, audio: true })
+              .then((stream) => {
+                // 成功時にvideo要素にカメラ映像をセットし、再生
+                const videoElm = document.getElementById("my-video");
+                videoElm.srcObject = stream;
+                videoElm.play();
+                const videoElm2 = document.getElementById("their-video");
+                videoElm2.srcObject = stream;
+                videoElm2.play();
+                // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+                localStream = stream;
+              })
+              .catch((error) => {
+                // 失敗時にはエラーログを出力
+                console.error("mediaDevice.getUserMedia() error:", error);
+                return;
+              });
+          </script>
+    
+
+    <script>
+// CreateSourcefromVideoElement
+    const customSource = CY.createSource.fromVideoElement(document.getElementById("videoId"));
+    CY.loader()
+    .source(customSource)
+
+
+
+        // Complete code documentation of MorphCast AI SDK, here:
+        // https://ai-sdk.morphcast.com/latest/index.html
+    const config1 = {smoothness: 0.40, enableBalancer : false};
+    const config2 = {smoothness: 0.70};
+
+    //APIからデータを取得
+    CY.loader()
+        .licenseKey("d9869e8958986975c4cddb5aba3bf97adf31766c78e9")
+        .addModule(CY.modules().FACE_AGE.name)
+        .addModule(CY.modules().FACE_GENDER.name)
+        .addModule(CY.modules().FACE_EMOTION.name)
+        .addModule(CY.modules().FACE_EMOTION.name, config1)
+        .addModule(CY.modules().FACE_AROUSAL_VALENCE.name, config2)
+        .load()
+        .then(({ start, stop }) => start());
+
+    //データをつける
+    const age_div = document.querySelector("#age");
+    const gen_div = document.querySelector("#gender");
+    const emo_div = document.querySelector("#emotion");
+    const emo_rsl = document.querySelector("#emotion_result");
+    const emo_ar_va = document.querySelector("#face_arousal_valence_result");
+        
+    window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
+        age_div.innerHTML = 'Age: ' + evt.detail.output.numericAge;
+    });
+    window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
+        gen_div.innerHTML = 'Gender: ' + evt.detail.output.mostConfident;
+    }); 
+    window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
+        emo_div.innerHTML = 'Emotion: ' + evt.detail.output.dominantEmotion;
+    });
+
+    //3 Emotion result
+    window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
+        console.log('emotion_result', evt.detail);
+        emo_rsl.innerHTML = "Angry: "+ evt.detail.output.emotion.Angry
+        + "<br>Disgust: "+ evt.detail.output.emotion.Disgust
+        + "<br>Fear: "+ evt.detail.output.emotion.Fear
+        + "<br>Happy: "+ evt.detail.output.emotion.Happy
+        + "<br>Neutral:"+ evt.detail.output.emotion.Neutral
+        + "<br>Sad: "+ evt.detail.output.emotion.Sad
+        + "<br>Surprise: "+ evt.detail.output.emotion.Surprise;
+    });
+    const FACE_EMOTION_EVENT = {
+        output: {
+        dominantEmotion: String,
+        emotion: {Angry: Number, Disgust: Number, Fear: Number, Happy: Number, Neutral: Number, Sad: Number, Surprise: Number}
+        }
+    }
+
+    //4 FACE_AROUSAL_VALENC
+    //Arousal/valencについては https://www.intageholdings.co.jp/rd/blog/researchareas/contents201810251259.html
+    window.addEventListener(CY.modules().FACE_AROUSAL_VALENCE.eventName, (evt) => {
+        console.log('face_arousal_valence_result', evt.detail);
+        emo_ar_va.innerHTML = "Arousal: "+ evt.detail.output.arousalvalence.arousal
+        + "<br>Valence: "+ evt.detail.output.arousalvalence.valence;
+    });
+    const FACE_AROUSAL_VALENCE_EVENT = {
+    output: {
+      calibrated: { arousal: Number, valence: Number },
+      affects38 : { "Afraid": Number, "Amused": Number,  },
+      affects98 : { "Adventurous": Number, "Afraid": Number, },
+      quadrant : String
+    }
+    };
+        
+    </script>
+</body>
+</html>
